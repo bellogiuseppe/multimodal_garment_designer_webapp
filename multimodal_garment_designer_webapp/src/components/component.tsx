@@ -30,11 +30,36 @@ To read more about using these font, please visit the Next.js documentation:
   --radius: 0.5rem;
 }
 **/
+
+"use client";
+import { useState } from 'react';
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 
 export function Component() {
+
+  //Initialize state with an empty array of textual inputs
+  const [textualInputs, setTextualInput] = useState<string[]>([]);
+  //addedInput is the value of the textarea. The function setAddedInput is used to update the value of the textarea.
+  const [addedInput, setAddedInput] = useState<string>("");
+
+  //Event handler to add a new textual input
+  const handleAddTextualInputClick = () => {
+    // Ensure the text is not empty
+    if (addedInput.trim()) { 
+      setTextualInput([...textualInputs, addedInput]);
+      // Clear the textarea after adding
+      setAddedInput(""); 
+    }
+  };
+
+  //Event handler to remove a textual input
+  const handleRemoveTextualInput = (index: number) => {
+    setTextualInput(textualInputs.filter((_, i) => i !== index));
+  };
+    
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-950 p-4 md:p-8">
       <div className="max-w-4xl w-full bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden">
@@ -124,16 +149,29 @@ export function Component() {
             <h1 className="text-3xl font-bold">Design Your Shirt</h1>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="text">Add Text</Label>
+                <Label htmlFor="text">Add Textual Input</Label>
                 <div className="relative">
-                  <Textarea className="w-full pr-12" id="text" placeholder="Enter your text here..." rows={3} />
-                  <Button className="absolute top-1/2 -translate-y-1/2 right-3" size="icon" variant="outline">
+                  <Textarea className="w-full pr-12" id="text" value={addedInput} onChange={(e) => setAddedInput(e.target.value)} placeholder="Enter your text here..." rows={3} />
+                  <Button className="absolute top-1/2 -translate-y-1/2 right-3" size="icon" variant="outline" onClick={handleAddTextualInputClick}>
                     <PlusIcon className="w-5 h-5" />
                   </Button>
                 </div>
               </div>
               <div className="balloon-container space-y-2">
-                <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 flex items-center justify-between mb-2 balloon">
+                {textualInputs.map((text, index) => (
+                  <div key={index} className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 flex items-center justify-between mb-2 balloon">
+                    <span>{text}</span>
+                    <Button
+                      className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                      size="icon"
+                      variant="outline"
+                      onClick={() => handleRemoveTextualInput(index)}
+                    >
+                      <XIcon className="w-4 h-4" />
+                    </Button>
+                 </div>
+              ))}
+                {/*<div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 flex items-center justify-between mb-2 balloon">
                   <span>Hello World</span>
                   <Button
                     className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
@@ -162,7 +200,7 @@ export function Component() {
                   >
                     <XIcon className="w-4 h-4" />
                   </Button>
-                </div>
+                </div>*/}
               </div>
               <div>
                 <Label>Draw on the Shirt</Label>
