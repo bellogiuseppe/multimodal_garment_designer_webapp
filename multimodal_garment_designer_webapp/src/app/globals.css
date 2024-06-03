@@ -8,6 +8,11 @@
   --background-end-rgb: 255, 255, 255;
 }
 
+.faded {
+  opacity: 0.5;
+  transition: opacity 0.3s ease-in-out;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
