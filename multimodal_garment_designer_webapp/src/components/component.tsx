@@ -39,12 +39,15 @@ import { Textarea } from "@/components/ui/textarea"
 
 export function Component() {
 
-  //Initialize state with an empty array of textual inputs
+  // Initialize state with an empty array of textual inputs
   const [textualInputs, setTextualInput] = useState<string[]>([]);
-  //addedInput is the value of the textarea. The function setAddedInput is used to update the value of the textarea.
+  // addedInput is the value of the textarea. The function setAddedInput is used to update the value of the textarea.
   const [addedInput, setAddedInput] = useState<string>("");
 
-  //Event handler to add a new textual input
+  // State to manage the current image
+  const [currentImage, setCurrentImage] = useState<string>("/assets/model1.jpg");
+
+  // Event handler to add a new textual input
   const handleAddTextualInputClick = () => {
     // Ensure the text is not empty
     if (addedInput.trim()) { 
@@ -54,7 +57,12 @@ export function Component() {
     }
   };
 
-  //Event handler to remove a textual input
+  // Event handler to change the current image
+  const handleImageChange = (newImage: string) => {
+    setCurrentImage(newImage);
+  };
+
+  // Event handler to remove a textual input
   const handleRemoveTextualInput = (index: number) => {
     setTextualInput(textualInputs.filter((_, i) => i !== index));
   };
@@ -64,87 +72,83 @@ export function Component() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-950 p-4 md:p-8">
       <div className="max-w-4xl w-full bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden">
         <div className="grid md:grid-cols-2">
-          <div className="relative flex items-center justify-center bg-gray-100 dark:bg-gray-800 p-8">
+        <div className="relative flex items-center justify-center bg-gray-100 dark:bg-gray-800 p-8">
             <img
               alt="Model"
               className="max-w-full h-auto rounded-lg"
-              height={500}
-              src="/placeholder.svg"
-              style={{
-                aspectRatio: "400/500",
-                objectFit: "cover",
-              }}
-              width={400}
+              height={1024}
+              src={currentImage}
+              width={768}
             />
-            <div className="absolute inset-0 bg-black/50 flex items-center justify-center" />
-            <div className="absolute bottom-4 right-4 flex items-center gap-2">
-              <Button size="icon" variant="outline">
-                <img
-                  alt="Model 1"
-                  className="rounded-md"
-                  height={50}
-                  src="/placeholder.svg"
-                  style={{
-                    aspectRatio: "40/50",
-                    objectFit: "cover",
-                  }}
-                  width={40}
-                />
-              </Button>
-              <Button size="icon" variant="outline">
-                <img
-                  alt="Model 2"
-                  className="rounded-md"
-                  height={50}
-                  src="/placeholder.svg"
-                  style={{
-                    aspectRatio: "40/50",
-                    objectFit: "cover",
-                  }}
-                  width={40}
-                />
-              </Button>
-              <Button size="icon" variant="outline">
-                <img
-                  alt="Model 3"
-                  className="rounded-md"
-                  height={50}
-                  src="/placeholder.svg"
-                  style={{
-                    aspectRatio: "40/50",
-                    objectFit: "cover",
-                  }}
-                  width={40}
-                />
-              </Button>
-              <Button size="icon" variant="outline">
-                <img
-                  alt="Model 4"
-                  className="rounded-md"
-                  height={50}
-                  src="/placeholder.svg"
-                  style={{
-                    aspectRatio: "40/50",
-                    objectFit: "cover",
-                  }}
-                  width={40}
-                />
-              </Button>
-              <Button size="icon" variant="outline">
-                <img
-                  alt="Model 5"
-                  className="rounded-md"
-                  height={50}
-                  src="/placeholder.svg"
-                  style={{
-                    aspectRatio: "40/50",
-                    objectFit: "cover",
-                  }}
-                  width={40}
-                />
-              </Button>
+            <div /*className="absolute inset-0 bg-black/50 flex items-center justify-center"*/ />
+              <div className="absolute bottom-4 right-4 flex items-center gap-2">
+                <Button size="icon" variant="outline" onClick={() => handleImageChange("/assets/model1.jpg")}>
+                  <img
+                    alt="Model 1"
+                    className="rounded-md"
+                    height={50}
+                    src="/assets/model1.jpg"
+                    style={{
+                      aspectRatio: "40/50",
+                      objectFit: "cover",
+                    }}
+                    width={40}
+                  />
+                </Button>
+                <Button size="icon" variant="outline" onClick={() => handleImageChange("/assets/model2.jpg")}>
+                  <img
+                    alt="Model 2"
+                    className="rounded-md"
+                    height={50}
+                    src="/assets/model2.jpg"
+                    style={{
+                      aspectRatio: "40/50",
+                      objectFit: "cover",
+                    }}
+                    width={40}
+                  />
+                </Button>
+                <Button size="icon" variant="outline" onClick={() => handleImageChange("/assets/model3.jpg")}>
+                  <img
+                    alt="Model 3"
+                    className="rounded-md"
+                    height={50}
+                    src="/assets/model3.jpg"
+                    style={{
+                      aspectRatio: "40/50",
+                      objectFit: "cover",
+                    }}
+                    width={40}
+                  />
+                </Button>
+                <Button size="icon" variant="outline" onClick={() => handleImageChange("/assets/model4.jpg")}>
+                  <img
+                    alt="Model 4"
+                    className="rounded-md"
+                    height={50}
+                    src="/assets/model4.jpg"
+                    style={{
+                      aspectRatio: "40/50",
+                      objectFit: "cover",
+                    }}
+                    width={40}
+                  />
+                </Button>
+                <Button size="icon" variant="outline" onClick={() => handleImageChange("/assets/model5.jpg")}>
+                  <img
+                    alt="Model 5"
+                    className="rounded-md"
+                    height={50}
+                    src="/assets/model5.jpg"
+                    style={{
+                      aspectRatio: "40/50",
+                      objectFit: "cover",
+                    }}
+                    width={40}
+                  />
+                </Button>
+              </div>
             </div>
-          </div>
           <div className="p-8 space-y-6">
             <h1 className="text-3xl font-bold">Design Your Shirt</h1>
             <div className="space-y-4">
