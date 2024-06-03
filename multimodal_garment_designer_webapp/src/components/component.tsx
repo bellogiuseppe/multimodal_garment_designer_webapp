@@ -68,8 +68,22 @@ export function Component() {
   };
 
   const handleToggleCanvas = () => {
-    setShowCanvas(!showCanvas);
-  };
+    const canvas = canvasRef.current;
+    if (showCanvas) {
+      if (canvas) {
+        canvas.classList.add('fade-out');
+        setTimeout(() => {
+          setShowCanvas(false);
+          canvas.classList.remove('fade-out');
+        }, 300); // Match the duration of the CSS transition
+      }
+    } else {
+      setShowCanvas(true);
+      if (canvas) {
+        canvas.classList.remove('fade-out');
+      }
+    }
+  };  
 
   const clearCanvas = () => {
     if (canvasContext) {
@@ -122,12 +136,13 @@ export function Component() {
               />
               {showCanvas && (
                 <canvas
-                  ref={canvasRef}
-                  id="design-canvas"
-                  className="absolute top-0 left-0 w-full h-full rounded-lg"
-                  onMouseDown={handleMouseDown}
-                  onMouseMove={handleMouseMove}
-                  onMouseUp={handleMouseUp}
+                ref={canvasRef}
+                id="design-canvas"
+                className={`absolute top-0 left-0 w-full h-full rounded-lg ${!showCanvas ? 'fade-out' : ''}`}
+                style={{ display: showCanvas ? 'block' : 'none' }}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
                 />
               )}
             </div>
