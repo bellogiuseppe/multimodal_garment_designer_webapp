@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import domtoimage from 'dom-to-image';
 
 export function Component() {
   // Initialize state with an empty array of textual inputs
@@ -60,7 +61,7 @@ export function Component() {
       canvasContext.beginPath();
       canvasContext.moveTo(lastPosition.x, lastPosition.y);
       canvasContext.lineTo(currentPosition.x, currentPosition.y);
-      canvasContext.strokeStyle = "black";
+      canvasContext.strokeStyle = "white";
       canvasContext.lineWidth = 4;
       canvasContext.stroke();
       setLastPosition(currentPosition);
@@ -124,6 +125,27 @@ export function Component() {
   // Event handler to remove a textual input
   const handleRemoveTextualInput = (index: number) => {
     setTextualInput(textualInputs.filter((_, i) => i !== index));
+  };
+
+  const handleGenerateDesign = () => {
+    if (canvasRef.current) {
+      domtoimage.toJpeg(canvasRef.current, { quality: 0.95 })
+        .then(function (dataUrl) {
+          // Create a link element
+          const link = document.createElement('a');
+          link.download = 'design.jpeg'; // Set the file name
+          link.href = dataUrl; // Set the data URL as href
+          // Append the link to the document body
+          document.body.appendChild(link);
+          // Trigger a click on the link to initiate download
+          link.click();
+          // Remove the link from the document body
+          document.body.removeChild(link);
+        })
+        .catch(function (error) {
+          console.error('Error generating design:', error);
+        });
+    }
   };
 
   return (
@@ -268,7 +290,7 @@ export function Component() {
               </div>
             </div>
             <div className="balloon-container space-y-2" />
-            <Button className="w-full">Generate Shirt Design</Button>
+            <Button className="w-full" onClick={handleGenerateDesign}>Generate Shirt Design</Button>
             <div className="flex items-center justify-center">
               <img
                 alt="Latest Generated Design"
