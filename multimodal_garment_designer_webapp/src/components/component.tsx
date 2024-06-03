@@ -21,16 +21,20 @@ export function Component() {
 
   // State to manage drawing
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
-  const [canvasContext, setCanvasContext] = useState(null);
+  const [canvasContext, setCanvasContext] = useState<CanvasRenderingContext2D | null>(null);
   const [lastPosition, setLastPosition] = useState({ x: 0, y: 0 });
+  const [savedDrawing, setSavedDrawing] = useState<ImageData | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext("2d");
       setCanvasContext(ctx);
+      if (savedDrawing) {
+        ctx.putImageData(savedDrawing, 0, 0);
+      }
     }
-  }, [showCanvas]);
+  }, [showCanvas, savedDrawing]);
 
   const handleMouseDown = (e) => {
     setIsDrawing(true);
@@ -65,6 +69,11 @@ export function Component() {
   
   const handleMouseUp = () => {
     setIsDrawing(false);
+    if (canvasContext && canvasRef.current) {
+      const ctx = canvasContext;
+      const drawing = ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
+      setSavedDrawing(drawing);
+    }
   };
 
   const handleToggleCanvas = () => {
@@ -79,15 +88,20 @@ export function Component() {
       }
     } else {
       setShowCanvas(true);
-      if (canvas) {
+      if (canvas && savedDrawing) {
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.putImageData(savedDrawing, 0, 0);
+        }
         canvas.classList.remove('fade-out');
       }
     }
-  };  
+  };
 
   const clearCanvas = () => {
     if (canvasContext) {
       canvasContext.clearRect(0, 0, canvasContext.canvas.width, canvasContext.canvas.height);
+      setSavedDrawing(null); // Clear saved drawing as well
     }
   };
 
