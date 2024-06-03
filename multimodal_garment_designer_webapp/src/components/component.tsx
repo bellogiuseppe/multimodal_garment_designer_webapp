@@ -141,12 +141,47 @@ export function Component() {
           link.click();
           // Remove the link from the document body
           document.body.removeChild(link);
+  
+          // Create JSON object to store sentences
+          const sentences = {};
+  
+          // Iterate over textualInputs and associate them with the selected model number
+          textualInputs.forEach(sentence => {
+            // Get the model number from the current image URL
+            const modelNumber = currentImage.substring(currentImage.lastIndexOf('/') + 1, currentImage.lastIndexOf('.'));
+            // Check if the model number already exists in the sentences object
+            if (sentences[modelNumber]) {
+              // If it exists, push the sentence to the existing array
+              sentences[modelNumber].push(sentence);
+            } else {
+              // If it doesn't exist, create a new array with the sentence
+              sentences[modelNumber] = [sentence];
+            }
+          });
+  
+          // Convert sentences object to JSON string
+          const json = JSON.stringify(sentences, null, 2);
+  
+          // Create a Blob object containing the JSON data
+          const blob = new Blob([json], { type: 'application/json' });
+  
+          // Create a link element for JSON download
+          const jsonLink = document.createElement('a');
+          jsonLink.download = 'design.json'; // Set the file name
+          jsonLink.href = URL.createObjectURL(blob); // Set the Blob object as href
+          // Append the link to the document body
+          document.body.appendChild(jsonLink);
+          // Trigger a click on the link to initiate download
+          jsonLink.click();
+          // Remove the link from the document body
+          document.body.removeChild(jsonLink);
         })
         .catch(function (error) {
           console.error('Error generating design:', error);
         });
     }
   };
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-950 p-4 md:p-8">
