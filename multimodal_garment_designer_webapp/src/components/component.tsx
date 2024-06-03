@@ -106,6 +106,15 @@ export function Component() {
     }
   };
 
+  // Update the function to handle Enter key press
+  const handleTextareaKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent default behavior (e.g., new line in textarea)
+      handleAddTextualInputClick(); // Call the function to add the textual input
+      setAddedInput("");
+    }
+  };
+
   // Event handler to add a new textual input
   const handleAddTextualInputClick = () => {
     // Ensure the text is not empty
@@ -286,12 +295,19 @@ export function Component() {
             </div>
           </div>
           <div className="p-8 space-y-6">
-            <h1 className="text-3xl font-bold">Design Your Shirt</h1>
+            <h1 className="text-3xl font-bold">Draw your design!</h1>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="text">Add Textual Input</Label>
                 <div className="relative">
-                  <Textarea className="w-full pr-12" id="text" value={addedInput} onChange={(e) => setAddedInput(e.target.value)} placeholder="Enter your text here..." rows={3} />
+                <Textarea
+                  className="w-full pr-12"
+                  id="text"
+                  value={addedInput}
+                  onChange={(e) => setAddedInput(e.target.value)}
+                  onKeyPress={handleTextareaKeyPress} // Add this line to handle Enter key press
+                  placeholder="Describe fabric, color, or distinct characteristics..."
+                  rows={3}
+                />
                   <Button className="absolute top-1/2 -translate-y-1/2 right-3" size="icon" variant="outline" onClick={handleAddTextualInputClick}>
                     <PlusIcon className="w-5 h-5" />
                   </Button>
@@ -313,7 +329,7 @@ export function Component() {
                 ))}
               </div>
               <div>
-                <Label>Draw on the Shirt</Label>
+                <Label>Draw on the Model</Label>
                 <div className="flex items-center justify-center">
                   <Button className="mr-2" size="icon" variant="outline" onClick={handleToggleCanvas}>
                     <PencilIcon className="w-5 h-5" />
@@ -325,7 +341,7 @@ export function Component() {
               </div>
             </div>
             <div className="balloon-container space-y-2" />
-            <Button className="w-full" onClick={handleGenerateDesign}>Generate Shirt Design</Button>
+            <Button className="w-full" onClick={handleGenerateDesign}>Generate Design</Button>
             <div className="flex items-center justify-center">
               <img
                 alt="Latest Generated Design"
