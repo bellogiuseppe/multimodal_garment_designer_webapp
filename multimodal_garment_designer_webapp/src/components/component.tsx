@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import domtoimage from 'dom-to-image';
+import "../style.css";
 
 export function Component() {
   // Initialize state with an empty array of textual inputs
@@ -190,11 +191,12 @@ export function Component() {
         });
     }
   };
-  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-950 p-4 md:p-8">
+      <h1 className="text-3xl font-bold" style={{textAlign : 'center', marginBottom : '10px'}}>Draw your design!</h1>
       <div className="max-w-4xl w-full bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden">
+      
         <div className="grid md:grid-cols-2">
           <div className="relative flex items-center justify-center bg-gray-100 dark:bg-gray-800 p-8">
             <div className="relative">
@@ -295,7 +297,6 @@ export function Component() {
             </div>
           </div>
           <div className="p-8 space-y-6">
-            <h1 className="text-3xl font-bold">Draw your design!</h1>
             <div className="space-y-4">
               <div>
                 <div className="relative">
@@ -328,9 +329,9 @@ export function Component() {
                   </div>
                 ))}
               </div>
-              <div>
-                <Label>Draw on the Model</Label>
-                <div className="flex items-center justify-center">
+              <div style={{marginTop: '20px'}}>
+                <Label style={{textAlign: 'center', display: 'block'}}>Draw on the Model</Label>
+                <div className="flex items-center justify-center" style={{marginTop: '10px'}}>
                   <Button className="mr-2" size="icon" variant="outline" onClick={handleToggleCanvas}>
                     <PencilIcon className="w-5 h-5" />
                   </Button>
